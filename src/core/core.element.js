@@ -1,4 +1,4 @@
-import {isNumber} from '../helpers/helpers.math';
+import {isNumber} from '../helpers/helpers.math.js';
 
 export default class Element {
 

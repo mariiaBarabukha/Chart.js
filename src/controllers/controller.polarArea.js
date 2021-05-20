@@ -1,5 +1,5 @@
-import DatasetController from '../core/core.datasetController';
-import {toRadians, PI} from '../helpers/index';
+import DatasetController from '../core/core.datasetController.js';
+import {toRadians, PI} from '../helpers/index.js';
 
 export default class PolarAreaController extends DatasetController {
 

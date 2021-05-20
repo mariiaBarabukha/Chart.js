@@ -1,14 +1,18 @@
-import defaults from '../core/core.defaults';
-import Element from '../core/core.element';
-import layouts from '../core/core.layouts';
-import {addRoundedRectPath, drawPoint, renderText} from '../helpers/helpers.canvas';
+import defaults from '../core/core.defaults.js';
+import Element from '../core/core.element.js';
+import layouts from '../core/core.layouts.js';
+import {addRoundedRectPath, drawPoint, renderText} from '../helpers/helpers.canvas.js';
 import {
   callback as call, valueOrDefault, toFont,
   toPadding, getRtlAdapter, overrideTextDirection, restoreTextDirection,
   clipArea, unclipArea
-} from '../helpers/index';
-import {_toLeftRightCenter, _alignStartEnd, _textX} from '../helpers/helpers.extras';
-import {toTRBLCorners} from '../helpers/helpers.options';
+} from '../helpers/index.js';
+import {_toLeftRightCenter, _alignStartEnd, _textX} from '../helpers/helpers.extras.js';
+import {toTRBLCorners} from '../helpers/helpers.options.js';
+
+//import {dataLayer1, dataLayer2} from '../../myTests/myData.js';
+import DataStorage from "../../myTests/Data/DataStorage.js";
+import Model from "../../myTests/Model.js";
 /**
  * @typedef { import("../platform/platform.base").ChartEvent } ChartEvent
  */
@@ -69,6 +73,10 @@ export class Legend extends Element {
     this.position = undefined;
     this.weight = undefined;
     this.fullSize = undefined;
+    this.datas = undefined;
+    this.chartDataSets = undefined;
+    this.visibleDataSets = [];
+    this.hiddens = [];
   }
 
   update(maxWidth, maxHeight, margins) {
@@ -363,7 +371,31 @@ export class Legend extends Element {
         if (lineWidth !== 0) {
           ctx.stroke();
         }
+
+        ctx.beginPath();
+        var r = boxWidth/10;
+        ctx.arc(xBoxLeft, yBoxTop, r, 0, 2 * Math.PI);
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.fill();
+        ctx.stroke();
+
+       
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(xBoxLeft+r, yBoxTop);
+        ctx.lineTo(xBoxLeft-r, yBoxTop);
+        ctx.stroke();
+
+        if(!legendItem.hidden){
+          ctx.beginPath();
+          ctx.moveTo(xBoxLeft, yBoxTop+r);
+          ctx.lineTo(xBoxLeft, yBoxTop-r);
+          ctx.stroke();
+        }
       }
+      
+      
 
       ctx.restore();
     };
@@ -563,6 +595,33 @@ function isListened(type, opts) {
     return true;
   }
   return false;
+};
+
+// function checkPostionOnLayer(legend, index){
+//   var i = 0;
+//   var decIndex = 0;
+//   var hiddens = [];
+//   var legends = legend.legendItems;
+//   legends.forEach(item => {
+//     if(i < index && item.hidden){
+//       //countHidden++;
+//       hiddens.push(legends.indexOf(item));
+//       var n = legends.indexOf(item) - decIndex;
+//       var amountOfChildren = dataLayer2[n].datasets.length;
+//       decIndex += amountOfChildren;
+//       i = i + amountOfChildren;
+//     }
+//     i++;
+//   });
+  
+//   return decIndex;
+// };
+
+function setVisibility(legend,ci){
+  legend.hiddens.forEach(h => {
+    ci.hide(h);
+  });
+  
 }
 
 export default {
@@ -619,16 +678,78 @@ export default {
 
     // a callback that will handle
     onClick(e, legendItem, legend) {
-      const index = legendItem.datasetIndex;
-      const ci = legend.chart;
-      if (ci.isDatasetVisible(index)) {
-        ci.hide(index);
-        legendItem.hidden = true;
-      } else {
-        ci.show(index);
-        legendItem.hidden = false;
+      
+      //const me = this;
+      const index = legendItem.datasetIndex;      
+      const ci = legend.chart;      
+      this.datas = [...ci.config._config.data.datasets];
+      if(this.visibleDataSets.length === 0){
+        this.datas.forEach(data => {
+          this.visibleDataSets.push(0);
+        });
       }
+
+      var clicked = ci.config._config.data.datasets[index];
+      var globalIndex;
+      for(var i = 0; i < Model.dataStorage.getAllDataSets().length; i++){
+        for(var j = 0; j < Model.dataStorage.getAllDataSets()[i].length;j++){
+          if(clicked.label === Model.dataStorage.getAllDataSets()[i][j].label){
+            globalIndex = j+i;  
+          }
+        }
+      }
+
+      if (ci.isDatasetVisible(index)) {  
+        var _hiddens = [];      
+        this.visibleDataSets[globalIndex]++;
+        this.hiddens.forEach(h => {
+          _hiddens.push(this.chartDataSets[h]);
+        });
+        this.hiddens = [];
+        this.chartDataSets = [...Model.dataStorage.getVisibleDataSets(this.visibleDataSets)];
+        var ind = ci.config._config.data.datasets.indexOf(clicked);
+        this.hiddens.push(ind);
+        
+        ci.config._config.data.datasets = [...this.chartDataSets];
+        
+        //this.hiddens.splice(indexOf());
+        _hiddens.forEach(h => {
+          this.hiddens.push(ci.config._config.data.datasets.indexOf(h));
+        });
+        ci.config._config.data.datasets.splice(ind, 1, clicked);
+        //this.hiddens = [];
+       
+        ci.hide(ind);
+        // ci.update();
+        //setVisibility(legend);
+        
+      } else {
+        var _hiddens = [];
+        
+        this.visibleDataSets[globalIndex]--;
+        
+        var ind = ci.config._config.data.datasets.indexOf(clicked);
+        this.hiddens.splice(this.hiddens.indexOf(ind), 1);
+        this.hiddens.forEach(h => {
+          _hiddens.push(this.chartDataSets[h]);
+        });
+        this.chartDataSets = [...Model.dataStorage.getVisibleDataSets(this.visibleDataSets)];
+        
+        ci.config._config.data.datasets = [...this.chartDataSets];
+        ci.config._config.data.datasets.splice(ind, 1, clicked);
+        legendItem.hidden = false;
+        this.hiddens = [];
+        _hiddens.forEach(h => {
+          var a = ci.config._config.data.datasets.indexOf(h);
+          this.hiddens.push(ci.config._config.data.datasets.indexOf(h));
+        });
+        ci.show(ind);
+      }
+      setVisibility(legend, ci)
     },
+
+    
+    
 
     onHover: null,
     onLeave: null,
@@ -658,9 +779,9 @@ export default {
 
           return {
             text: datasets[meta.index].label,
-            fillStyle: style.backgroundColor,
+            fillStyle: datasets[meta.index].backgroundColor,
             fontColor: color,
-            hidden: !meta.visible,
+            hidden: meta.hidden || !meta.visible,
             lineCap: style.borderCapStyle,
             lineDash: style.borderDash,
             lineDashOffset: style.borderDashOffset,
@@ -694,3 +815,5 @@ export default {
     }
   },
 };
+
+

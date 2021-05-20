@@ -1,5 +1,5 @@
-import {isArray, isNullOrUndef} from './helpers.core';
-import {PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from './helpers.math';
+import {isArray, isNullOrUndef} from './helpers.core.js';
+import {PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from './helpers.math.js';
 
 /**
  * @typedef { import("../core/core.controller").default } Chart

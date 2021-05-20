@@ -1,5 +1,5 @@
-import {merge} from '../helpers';
-import defaults, {overrides} from './core.defaults';
+import {merge} from '../helpers/index.js';
+import defaults, {overrides} from './core.defaults.js';
 
 /**
  * @typedef {{id: string, defaults: any, overrides?: any, defaultRoutes: any}} IChartComponent
@@ -22,6 +22,7 @@ export default class TypedRegistry {
 	 * @returns {string} The scope where items defaults were registered to.
 	 */
   register(item) {
+    // console.log(item)
     const me = this;
     const proto = Object.getPrototypeOf(item);
     let parentScope;
@@ -58,7 +59,8 @@ export default class TypedRegistry {
 	 * @returns {object?}
 	 */
   get(id) {
-    return this.items[id];
+    //console.log(id);
+    return this.items[id] || this.items[id+'.js'];
   }
 
   /**
@@ -90,7 +92,7 @@ function registerDefaults(item, scope, parentScope) {
     item.defaults
   ]);
 
-  defaults.set(scope, itemDefaults);
+  defaults.set(scope, item.defaults);
 
   if (item.defaultRoutes) {
     routeDefaults(scope, item.defaultRoutes);

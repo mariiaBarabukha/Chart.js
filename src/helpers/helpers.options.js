@@ -1,6 +1,6 @@
-import defaults from '../core/core.defaults';
-import {isArray, isObject, toDimension, valueOrDefault} from './helpers.core';
-import {toFontString} from './helpers.canvas';
+import defaults from '../core/core.defaults.js';
+import {isArray, isObject, toDimension, valueOrDefault} from './helpers.core.js';
+import {toFontString} from './helpers.canvas.js';
 
 const LINE_HEIGHT = new RegExp(/^(normal|(\d+(?:\.\d+)?)(px|em|%)?)$/);
 const FONT_STYLE = new RegExp(/^(normal|italic|initial|inherit|unset|(oblique( -?[0-9]?[0-9]deg)?))$/);

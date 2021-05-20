@@ -1,7 +1,7 @@
-import DatasetController from '../core/core.datasetController';
-import {isNullOrUndef} from '../helpers';
-import {_limitValue, isNumber} from '../helpers/helpers.math';
-import {_lookupByKey} from '../helpers/helpers.collection';
+import DatasetController from '../core/core.datasetController.js';
+import {isNullOrUndef} from '../helpers/index.js';
+import {_limitValue, isNumber} from '../helpers/helpers.math.js';
+import {_lookupByKey} from '../helpers/helpers.collection.js';
 
 export default class LineController extends DatasetController {
 

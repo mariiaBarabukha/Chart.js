@@ -1,4 +1,4 @@
-import LineController from './controller.line';
+import LineController from './controller.line.js';
 
 export default class ScatterController extends LineController {
 

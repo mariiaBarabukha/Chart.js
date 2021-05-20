@@ -1,9 +1,9 @@
-import Element from '../core/core.element';
-import {_bezierInterpolation, _pointInLine, _steppedInterpolation} from '../helpers/helpers.interpolation';
-import {_computeSegments, _boundSegments} from '../helpers/helpers.segment';
-import {_steppedLineTo, _bezierCurveTo} from '../helpers/helpers.canvas';
-import {_updateBezierControlPoints} from '../helpers/helpers.curve';
-import {valueOrDefault} from '../helpers';
+import Element from '../core/core.element.js';
+import {_bezierInterpolation, _pointInLine, _steppedInterpolation} from '../helpers/helpers.interpolation.js';
+import {_computeSegments, _boundSegments} from '../helpers/helpers.segment.js';
+import {_steppedLineTo, _bezierCurveTo} from '../helpers/helpers.canvas.js';
+import {_updateBezierControlPoints} from '../helpers/helpers.curve.js';
+import {valueOrDefault} from '../helpers/index.js';
 
 /**
  * @typedef { import("./element.point").default } PointElement

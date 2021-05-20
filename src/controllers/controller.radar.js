@@ -1,4 +1,4 @@
-import DatasetController from '../core/core.datasetController';
+import DatasetController from '../core/core.datasetController.js';
 
 export default class RadarController extends DatasetController {
 

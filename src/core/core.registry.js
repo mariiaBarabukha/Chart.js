@@ -1,8 +1,8 @@
-import DatasetController from './core.datasetController';
-import Element from './core.element';
-import Scale from './core.scale';
-import TypedRegistry from './core.typedRegistry';
-import {each, callback as call, _capitalize} from '../helpers/helpers.core';
+import DatasetController from './core.datasetController.js';
+import Element from './core.element.js';
+import Scale from './core.scale.js';
+import TypedRegistry from './core.typedRegistry.js';
+import {each, callback as call, _capitalize} from '../helpers/helpers.core.js';
 
 /**
  * Please use the module's default export which provides a singleton instance
@@ -63,6 +63,7 @@ export class Registry {
 	 * @returns {typeof DatasetController}
 	 */
   getController(id) {
+    //console.log(this.controllers);
     return this._get(id, this.controllers, 'controller');
   }
 
@@ -125,6 +126,7 @@ export class Registry {
     const me = this;
     [...args].forEach(arg => {
       const reg = typedRegistry || me._getRegistryForType(arg);
+     // console.log(reg.isForType(arg));
       if (typedRegistry || reg.isForType(arg) || (reg === me.plugins && arg.id)) {
         me._exec(method, reg, arg);
       } else {
@@ -175,8 +177,11 @@ export class Registry {
 	 */
   _get(id, typedRegistry, type) {
     const item = typedRegistry.get(id);
+    //console.log(typedRegistry);
     if (item === undefined) {
+      
       throw new Error('"' + id + '" is not a registered ' + type + '.');
+
     }
     return item;
   }

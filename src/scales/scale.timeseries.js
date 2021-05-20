@@ -1,6 +1,6 @@
-import TimeScale from './scale.time';
-import {_lookup} from '../helpers/helpers.collection';
-import {isNullOrUndef} from '../helpers/helpers.core';
+import TimeScale from './scale.time.js';
+import {_lookup} from '../helpers/helpers.collection.js';
+import {isNullOrUndef} from '../helpers/helpers.core.js';
 
 /**
  * Linearly interpolates the given source `val` using the table. If value is out of bounds, values

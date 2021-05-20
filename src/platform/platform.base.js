@@ -1,6 +1,6 @@
 
 /**
- * @typedef { import("../core/core.controller").default } Chart
+ * @typedef { import("../core/core.controller.js").default } Chart
  */
 
 /**

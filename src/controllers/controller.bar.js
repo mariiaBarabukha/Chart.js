@@ -1,8 +1,8 @@
-import DatasetController from '../core/core.datasetController';
+import DatasetController from '../core/core.datasetController.js';
 import {
   clipArea, unclipArea, _arrayUnique, isArray, isNullOrUndef,
   valueOrDefault, resolveObjectKey, sign
-} from '../helpers';
+} from '../helpers/index.js';
 
 function getAllScaleValues(scale) {
   if (!scale._cache.$bar) {
@@ -164,6 +164,7 @@ function isFloatBar(custom) {
 
 export default class BarController extends DatasetController {
 
+  
   /**
 	 * Overriding primitive data parsing since we support mixed primitive/array
 	 * data for float bars
@@ -504,6 +505,8 @@ export default class BarController extends DatasetController {
     };
   }
 
+  
+  
   draw() {
     const me = this;
     const chart = me.chart;
@@ -512,12 +515,13 @@ export default class BarController extends DatasetController {
     const rects = meta.data;
     const ilen = rects.length;
     let i = 0;
+    
 
     clipArea(chart.ctx, chart.chartArea);
 
     for (; i < ilen; ++i) {
       if (me.getParsed(i)[vScale.axis] !== null) {
-        rects[i].draw(me._ctx);
+        rects[i].draw(me._ctx, chart, i, meta.index);        
       }
     }
 

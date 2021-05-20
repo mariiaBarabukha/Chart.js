@@ -1,5 +1,5 @@
-import {getHoverColor} from '../helpers/helpers.color';
-import {isObject, merge, valueOrDefault} from '../helpers/helpers.core';
+import {getHoverColor} from '../helpers/helpers.color.js';
+import {isObject, merge, valueOrDefault} from '../helpers/helpers.core.js';
 
 export const overrides = Object.create(null);
 export const descriptors = Object.create(null);

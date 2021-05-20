@@ -1,7 +1,7 @@
-import Element from '../core/core.element';
-import {_angleBetween, getAngleFromPoint, TAU, HALF_PI} from '../helpers/index';
-import {_limitValue} from '../helpers/helpers.math';
-import {_readValueToProps} from '../helpers/helpers.options';
+import Element from '../core/core.element.js';
+import {_angleBetween, getAngleFromPoint, TAU, HALF_PI} from '../helpers/index.js';
+import {_limitValue} from '../helpers/helpers.math.js';
+import {_readValueToProps} from '../helpers/helpers.options.js';
 
 function clipArc(ctx, element) {
   const {startAngle, endAngle, pixelMargin, x, y, outerRadius, innerRadius} = element;
@@ -202,7 +202,7 @@ function drawFullCircleBorders(ctx, element, inner) {
 
 function drawBorder(ctx, element) {
   const {options} = element;
-  const inner = options.borderAlign === 'inner';
+  const inner = options.borderAlign === 'inner.js';
 
   if (!options.borderWidth) {
     return;
@@ -210,10 +210,10 @@ function drawBorder(ctx, element) {
 
   if (inner) {
     ctx.lineWidth = options.borderWidth * 2;
-    ctx.lineJoin = 'round';
+    ctx.lineJoin = 'round.js';
   } else {
     ctx.lineWidth = options.borderWidth;
-    ctx.lineJoin = 'bevel';
+    ctx.lineJoin = 'bevel.js';
   }
 
   if (element.fullCircles) {
@@ -295,9 +295,9 @@ export default class ArcElement extends Element {
     return this.getCenterPoint(useFinalPosition);
   }
 
-  draw(ctx) {
+  draw(ctx, area, chart, i) {
     const me = this;
-    const options = me.options;
+    const options = chart.config._config.data.datasets[0];
     const offset = options.offset || 0;
     me.pixelMargin = (options.borderAlign === 'inner') ? 0.33 : 0;
     me.fullCircles = Math.floor(me.circumference / TAU);
@@ -313,8 +313,11 @@ export default class ArcElement extends Element {
       ctx.translate(Math.cos(halfAngle) * offset, Math.sin(halfAngle) * offset);
     }
 
-    ctx.fillStyle = options.backgroundColor;
-    ctx.strokeStyle = options.borderColor;
+    ctx.fillStyle = options.backgroundColor[i];
+    if(options.borderColor !== undefined){
+      ctx.strokeStyle = options.borderColor[i];
+    }
+    
 
     drawArc(ctx, me);
     drawBorder(ctx, me);
@@ -323,7 +326,7 @@ export default class ArcElement extends Element {
   }
 }
 
-ArcElement.id = 'arc';
+ArcElement.id = 'arc.js';
 
 /**
  * @type {any}

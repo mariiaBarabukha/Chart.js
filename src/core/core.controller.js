@@ -1,17 +1,17 @@
-import animator from './core.animator';
-import defaults, {overrides} from './core.defaults';
-import Interaction from './core.interaction';
-import layouts from './core.layouts';
-import {BasicPlatform, DomPlatform} from '../platform';
-import PluginService from './core.plugins';
-import registry from './core.registry';
-import Config, {determineAxis, getIndexAxis} from './core.config';
-import {retinaScale} from '../helpers/helpers.dom';
-import {each, callback as callCallback, uid, valueOrDefault, _elementsEqual, isNullOrUndef, setsEqual} from '../helpers/helpers.core';
-import {clearCanvas, clipArea, unclipArea, _isPointInArea} from '../helpers/helpers.canvas';
+import animator from './core.animator.js';
+import defaults, {overrides} from './core.defaults.js';
+import Interaction from './core.interaction.js';
+import layouts from './core.layouts.js';
+import {BasicPlatform, DomPlatform} from '../platform/index.js';
+import PluginService from './core.plugins.js';
+import registry from './core.registry.js';
+import Config, {determineAxis, getIndexAxis} from './core.config.js';
+import {retinaScale} from '../helpers/helpers.dom.js';
+import {each, callback as callCallback, uid, valueOrDefault, _elementsEqual, isNullOrUndef, setsEqual} from '../helpers/helpers.core.js';
+import {clearCanvas, clipArea, unclipArea, _isPointInArea} from '../helpers/helpers.canvas.js';
 // @ts-ignore
-import {version} from '../../package.json';
-import {debounce} from '../helpers/helpers.extras';
+//import {version} from '../../package.json';
+import {debounce} from '../helpers/helpers.extras.js';
 
 /**
  * @typedef { import("../platform/platform.base").ChartEvent } ChartEvent
@@ -137,6 +137,7 @@ class Chart {
       // the chart initialization but after setting basic chart / controller properties that
       // can help to figure out that the chart is not valid (e.g chart.canvas !== null);
       // https://github.com/chartjs/Chart.js/issues/2807
+      // console.log(canvas);
       console.error("Failed to create chart: can't acquire context from the given item");
       return;
     }
@@ -711,7 +712,7 @@ class Chart {
 
     const metasets = me.getSortedVisibleDatasetMetas();
     for (let i = metasets.length - 1; i >= 0; --i) {
-      me._drawDataset(metasets[i]);
+      me._drawDataset(metasets[i], i);
     }
 
     me.notifyPlugins('afterDatasetsDraw');
@@ -722,7 +723,7 @@ class Chart {
 	 * hook, in which case, plugins will not be called on `afterDatasetDraw`.
 	 * @private
 	 */
-  _drawDataset(meta) {
+  _drawDataset(meta, i) {
     const me = this;
     const ctx = me.ctx;
     const clip = meta._clip;
@@ -744,7 +745,7 @@ class Chart {
       bottom: clip.bottom === false ? me.height : area.bottom + clip.bottom
     });
 
-    meta.controller.draw();
+    meta.controller.draw(i);
 
     unclipArea(ctx);
 
@@ -1163,7 +1164,7 @@ Object.defineProperties(Chart, {
   },
   version: {
     enumerable,
-    value: version
+    //value: version
   },
   getChart: {
     enumerable,

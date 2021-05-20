@@ -1,8 +1,8 @@
-import adapters from '../core/core.adapters';
-import {callback as call, isFinite, isNullOrUndef, mergeIf, valueOrDefault} from '../helpers/helpers.core';
-import {toRadians, isNumber, _limitValue} from '../helpers/helpers.math';
-import Scale from '../core/core.scale';
-import {_arrayUnique, _filterBetween, _lookup} from '../helpers/helpers.collection';
+import adapters from '../core/core.adapters.js';
+import {callback as call, isFinite, isNullOrUndef, mergeIf, valueOrDefault} from '../helpers/helpers.core.js';
+import {toRadians, isNumber, _limitValue} from '../helpers/helpers.math.js';
+import Scale from '../core/core.scale.js';
+import {_arrayUnique, _filterBetween, _lookup} from '../helpers/helpers.collection.js';
 
 /**
  * @typedef { import("../core/core.adapters").Unit } Unit

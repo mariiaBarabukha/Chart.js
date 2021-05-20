@@ -1,11 +1,11 @@
-import Animations from '../core/core.animations';
-import Element from '../core/core.element';
-import {addRoundedRectPath} from '../helpers/helpers.canvas';
-import {each, noop, isNullOrUndef, isArray, _elementsEqual} from '../helpers/helpers.core';
-import {toFont, toPadding, toTRBLCorners} from '../helpers/helpers.options';
-import {getRtlAdapter, overrideTextDirection, restoreTextDirection} from '../helpers/helpers.rtl';
-import {distanceBetweenPoints, _limitValue} from '../helpers/helpers.math';
-import {drawPoint} from '../helpers';
+import Animations from '../core/core.animations.js';
+import Element from '../core/core.element.js';
+import {addRoundedRectPath} from '../helpers/helpers.canvas.js';
+import {each, noop, isNullOrUndef, isArray, _elementsEqual} from '../helpers/helpers.core.js';
+import {toFont, toPadding, toTRBLCorners} from '../helpers/helpers.options.js';
+import {getRtlAdapter, overrideTextDirection, restoreTextDirection} from '../helpers/helpers.rtl.js';
+import {distanceBetweenPoints, _limitValue} from '../helpers/helpers.math.js';
+import {drawPoint} from '../helpers/index.js';
 
 /**
  * @typedef { import("../platform/platform.base").ChartEvent } ChartEvent

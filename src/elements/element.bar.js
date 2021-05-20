@@ -1,7 +1,7 @@
-import Element from '../core/core.element';
-import {isObject} from '../helpers';
-import {addRoundedRectPath} from '../helpers/helpers.canvas';
-import {toTRBL, toTRBLCorners} from '../helpers/helpers.options';
+import Element from '../core/core.element.js';
+import {isObject} from '../helpers/index.js';
+import {addRoundedRectPath} from '../helpers/helpers.canvas.js';
+import {toTRBL, toTRBLCorners} from '../helpers/helpers.options.js';
 
 /**
  * Helper function to get the bounds of the bar regardless of the orientation
@@ -156,6 +156,8 @@ function addNormalRectPath(ctx, rect) {
   ctx.rect(rect.x, rect.y, rect.w, rect.h);
 }
 
+
+
 export default class BarElement extends Element {
 
   constructor(cfg) {
@@ -172,8 +174,9 @@ export default class BarElement extends Element {
     }
   }
 
-  draw(ctx) {
-    const options = this.options;
+  draw(ctx, chart,i,a) {
+    //console.log(chart.config._config);
+    const options = chart.config._config.data.datasets[a];
     const {inner, outer} = boundingRects(this);
     const addRectPath = hasRadius(outer.radius) ? addRoundedRectPath : addNormalRectPath;
 
@@ -190,7 +193,10 @@ export default class BarElement extends Element {
 
     ctx.beginPath();
     addRectPath(ctx, inner);
-    ctx.fillStyle = options.backgroundColor;
+    if(i >= options.backgroundColor.length){
+      i = 0;
+    }
+    ctx.fillStyle = options.backgroundColor[i];
     ctx.fill();
 
     ctx.restore();
@@ -221,7 +227,7 @@ export default class BarElement extends Element {
   }
 }
 
-BarElement.id = 'bar';
+BarElement.id = 'bar.js';
 
 /**
  * @type {any}

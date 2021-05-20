@@ -1,5 +1,5 @@
-import Element from '../core/core.element';
-import {drawPoint} from '../helpers/helpers.canvas';
+import Element from '../core/core.element.js';
+import {drawPoint} from '../helpers/helpers.canvas.js';
 
 function inRange(el, pos, axis, useFinalPosition) {
   const options = el.options;

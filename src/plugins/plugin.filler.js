@@ -4,11 +4,11 @@
  * @see https://github.com/chartjs/Chart.js/issues/2440#issuecomment-256461897
  */
 
-import LineElement from '../elements/element.line';
-import {_boundSegment, _boundSegments} from '../helpers/helpers.segment';
-import {clipArea, unclipArea} from '../helpers/helpers.canvas';
-import {isArray, isFinite, isObject, valueOrDefault} from '../helpers/helpers.core';
-import {TAU, _normalizeAngle} from '../helpers/helpers.math';
+import LineElement from '../elements/element.line.js';
+import {_boundSegment, _boundSegments} from '../helpers/helpers.segment.js';
+import {clipArea, unclipArea} from '../helpers/helpers.canvas.js';
+import {isArray, isFinite, isObject, valueOrDefault} from '../helpers/helpers.core.js';
+import {TAU, _normalizeAngle} from '../helpers/helpers.math.js';
 
 /**
  * @typedef { import('../core/core.controller').default } Chart

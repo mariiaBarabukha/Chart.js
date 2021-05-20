@@ -1,8 +1,8 @@
-import Animations from './core.animations';
-import defaults from './core.defaults';
-import {isArray, isFinite, isObject, valueOrDefault, resolveObjectKey, defined} from '../helpers/helpers.core';
-import {listenArrayEvents, unlistenArrayEvents} from '../helpers/helpers.collection';
-import {sign} from '../helpers/helpers.math';
+import Animations from './core.animations.js';
+import defaults from './core.defaults.js';
+import {isArray, isFinite, isObject, valueOrDefault, resolveObjectKey, defined} from '../helpers/helpers.core.js';
+import {listenArrayEvents, unlistenArrayEvents} from '../helpers/helpers.collection.js';
+import {sign} from '../helpers/helpers.math.js';
 
 /**
  * @typedef { import("./core.controller").default } Chart
@@ -68,7 +68,7 @@ function getSortedDatasetIndices(chart, filterVisible) {
 
 function applyStack(stack, value, dsIndex, options) {
   const keys = stack.keys;
-  const singleMode = options.mode === 'single';
+  const singleMode = options.mode === 'single.js';
   let i, ilen, datasetIndex, otherValue;
 
   if (value === null) {
@@ -202,7 +202,7 @@ function clearStacks(meta, items) {
   }
 }
 
-const isDirectUpdateMode = (mode) => mode === 'reset' || mode === 'none';
+const isDirectUpdateMode = (mode) => mode === 'reset' || mode === 'none.js';
 const cloneIfNotShared = (cached, shared) => shared ? cached : Object.assign({}, cached);
 
 export default class DatasetController {
@@ -686,12 +686,12 @@ export default class DatasetController {
       if (element.active) {
         active.push(element);
       } else {
-        element.draw(ctx, area);
+        element.draw(ctx, area, chart,i);
       }
     }
 
     for (i = 0; i < active.length; ++i) {
-      active[i].draw(ctx, area);
+      active[i].draw(ctx, area, chart);
     }
   }
 
@@ -703,7 +703,7 @@ export default class DatasetController {
 	 * @return {object} style object
 	 */
   getStyle(index, active) {
-    const mode = active ? 'active' : 'default';
+    const mode = active ? 'active' : 'default.js';
     return index === undefined && this._cachedMeta.dataset
       ? this.resolveDatasetElementOptions(mode)
       : this.resolveDataElementOptions(index || 0, mode);
@@ -755,7 +755,7 @@ export default class DatasetController {
 	 */
   _resolveElementOptions(elementType, mode = 'default', index) {
     const me = this;
-    const active = mode === 'active';
+    const active = mode === 'active.js';
     const cache = me._cachedDataOpts;
     const cacheKey = elementType + '-' + mode;
     const cached = cache[cacheKey];
@@ -767,7 +767,9 @@ export default class DatasetController {
     const scopeKeys = config.datasetElementScopeKeys(me._type, elementType);
     const prefixes = active ? [`${elementType}Hover`, 'hover', elementType, ''] : [elementType, ''];
     const scopes = config.getOptionScopes(me.getDataset(), scopeKeys);
-    const names = Object.keys(defaults.elements[elementType]);
+    //console.log((defaults.elements[elementType]));
+    const names = Object.keys(defaults.elements[elementType]||defaults.elements[elementType.substring(0,elementType.length-3)]) 
+   //console.log(elementType.substring(0,elementType.length-3));
     // context is provided as a function, and is called only if needed,
     // so we don't create a context for each element if not needed.
     const context = () => me.getContext(index, active);

@@ -52,7 +52,9 @@ export function isArray(value) {
  * @since 2.7.0
  */
 export function isObject(value) {
-  return value !== null && Object.prototype.toString.call(value) === '[object Object]';
+  // console.log(Object.prototype.toString.call(value));
+  return value !== null 
+  && (Object.prototype.toString.call(value) === '[object Module]' || Object.prototype.toString.call(value) === '[object Object]');
 }
 
 /**
@@ -229,10 +231,11 @@ export function _merger(key, target, source, options) {
 export function merge(target, source, options) {
   const sources = isArray(source) ? source : [source];
   const ilen = sources.length;
+  const targets = target || {};
 
-  if (!isObject(target)) {
-    return target;
-  }
+  // if (!isObject(target)) {
+  //   return target;
+  // }
 
   options = options || {};
   const merger = options.merger || _merger;

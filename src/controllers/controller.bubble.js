@@ -1,5 +1,5 @@
-import DatasetController from '../core/core.datasetController';
-import {resolveObjectKey, valueOrDefault} from '../helpers/helpers.core';
+import DatasetController from '../core/core.datasetController.js';
+import {resolveObjectKey, valueOrDefault} from '../helpers/helpers.core.js';
 
 export default class BubbleController extends DatasetController {
   initialize() {

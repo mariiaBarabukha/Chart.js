@@ -1,6 +1,6 @@
-import defaults from './core.defaults';
-import {each, isObject} from '../helpers/helpers.core';
-import {toPadding} from '../helpers/helpers.options';
+import defaults from './core.defaults.js';
+import {each, isObject} from '../helpers/helpers.core.js';
+import {toPadding} from '../helpers/helpers.options.js';
 
 /**
  * @typedef { import("./core.controller").default } Chart

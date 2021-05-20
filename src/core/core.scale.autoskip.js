@@ -1,5 +1,5 @@
-import {isNullOrUndef, valueOrDefault} from '../helpers/helpers.core';
-import {_factorize} from '../helpers/helpers.math';
+import {isNullOrUndef, valueOrDefault} from '../helpers/helpers.core.js';
+import {_factorize} from '../helpers/helpers.math.js';
 
 
 /**

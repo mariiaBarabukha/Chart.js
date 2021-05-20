@@ -1,4 +1,4 @@
-import {INFINITY} from './helpers.math';
+import {INFINITY} from './helpers.math.js';
 
 /**
  * @private

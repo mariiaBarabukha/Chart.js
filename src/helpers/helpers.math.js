@@ -1,4 +1,4 @@
-import {isFinite as isFiniteNumber} from './helpers.core';
+import {isFinite as isFiniteNumber} from './helpers.core.js';
 
 /**
  * @alias Chart.helpers.math

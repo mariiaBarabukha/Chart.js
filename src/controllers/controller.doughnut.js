@@ -1,7 +1,7 @@
-import DatasetController from '../core/core.datasetController';
-import {isArray, toPercentage, toDimension, valueOrDefault} from '../helpers/helpers.core';
-import {formatNumber} from '../helpers/helpers.intl';
-import {toRadians, PI, TAU, HALF_PI, _angleBetween} from '../helpers/helpers.math';
+import DatasetController from '../core/core.datasetController.js';
+import {isArray, toPercentage, toDimension, valueOrDefault} from '../helpers/helpers.core.js';
+import {formatNumber} from '../helpers/helpers.intl.js';
+import {toRadians, PI, TAU, HALF_PI, _angleBetween} from '../helpers/helpers.math.js';
 
 /**
  * @typedef { import("../core/core.controller").default } Chart

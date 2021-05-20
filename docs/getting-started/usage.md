@@ -26,6 +26,7 @@ The following example instantiates a bar chart showing the number of votes for d
 <canvas id="myChart" width="400" height="400"></canvas>
 <script>
 var ctx = document.getElementById('myChart');
+
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {

@@ -1,14 +1,14 @@
-import Element from './core.element';
-import {_alignPixel, _measureText, renderText, clipArea, unclipArea} from '../helpers/helpers.canvas';
-import {callback as call, each, finiteOrDefault, isArray, isFinite, isNullOrUndef, isObject} from '../helpers/helpers.core';
-import {toDegrees, toRadians, _int16Range, _limitValue, HALF_PI} from '../helpers/helpers.math';
-import {_alignStartEnd, _toLeftRightCenter} from '../helpers/helpers.extras';
-import {toFont, toPadding, _addGrace} from '../helpers/helpers.options';
+import Element from './core.element.js';
+import {_alignPixel, _measureText, renderText, clipArea, unclipArea} from '../helpers/helpers.canvas.js';
+import {callback as call, each, finiteOrDefault, isArray, isFinite, isNullOrUndef, isObject} from '../helpers/helpers.core.js';
+import {toDegrees, toRadians, _int16Range, _limitValue, HALF_PI} from '../helpers/helpers.math.js';
+import {_alignStartEnd, _toLeftRightCenter} from '../helpers/helpers.extras.js';
+import {toFont, toPadding, _addGrace} from '../helpers/helpers.options.js';
 
-import './core.scale.defaults';
+import './core.scale.defaults.js';
 
 
-import {autoSkip} from './core.scale.autoskip';
+import {autoSkip} from './core.scale.autoskip.js';
 
 
 const reverseAlign = (align) => align === 'left' ? 'right' : align === 'right' ? 'left' : align;

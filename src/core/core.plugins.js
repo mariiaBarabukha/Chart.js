@@ -1,5 +1,6 @@
-import registry from './core.registry';
-import {callback as callCallback, isNullOrUndef, valueOrDefault} from '../helpers/helpers.core';
+import registry from './core.registry.js';
+import {callback as callCallback, isNullOrUndef, valueOrDefault}
+ from '../helpers/helpers.core.js';
 
 /**
  * @typedef { import("./core.controller").default } Chart

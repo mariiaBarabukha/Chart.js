@@ -1,5 +1,5 @@
-import defaults from './core.defaults';
-import Ticks from './core.ticks';
+import defaults from './core.defaults.js';
+import Ticks from './core.ticks.js';
 
 defaults.set('scale', {
   display: true,

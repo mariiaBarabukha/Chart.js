@@ -1,5 +1,5 @@
-import {almostEquals, distanceBetweenPoints, sign} from './helpers.math';
-import {_isPointInArea} from './helpers.canvas';
+import {almostEquals, distanceBetweenPoints, sign} from './helpers.math.js';
+import {_isPointInArea} from './helpers.canvas.js';
 
 const EPSILON = Number.EPSILON || 1e-14;
 const getPoint = (points, i) => i < points.length && !points[i].skip && points[i];

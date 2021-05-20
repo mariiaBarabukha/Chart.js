@@ -1,4 +1,4 @@
-import {requestAnimFrame} from '../helpers/helpers.extras';
+import {requestAnimFrame} from '../helpers/helpers.extras.js';
 
 /**
  * @typedef { import("./core.animation").default } Animation

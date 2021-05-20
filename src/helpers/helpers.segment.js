@@ -1,4 +1,4 @@
-import {_angleBetween, _angleDiff, _normalizeAngle} from './helpers.math';
+import {_angleBetween, _angleDiff, _normalizeAngle} from './helpers.math.js';
 
 /**
  * @typedef { import("../elements/element.line").default } LineElement
