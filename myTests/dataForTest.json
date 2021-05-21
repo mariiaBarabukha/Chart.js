@@ -1,0 +1,102 @@
+{
+    "names":{
+        "rows": [
+            {
+                "name": "Country"                
+            }
+        ],
+        "columns": [
+            {
+                "name": "Category"
+            },
+            {
+                "name": "Color"
+            }
+        ],
+        "measures": [
+            {
+                "name": "Price"
+            },
+            {
+                "name": "Quantity"
+            }
+        ]
+    },
+    
+    "data":{
+        "rows": [
+            {
+                "Country": "Total"
+            },
+            {
+                "Country": "France"
+            },
+            {
+                "Country": "United States"
+            },
+            {
+                "Country": "Australia"
+            }
+        ],
+        "columns": [
+            
+            {
+                "Category": "Accessories",
+                "Color": "Total"
+            },
+            {
+                "Category": "Accessories",
+                "Color": "green"
+            },
+            {
+                "Category": "Accessories",
+                "Color": "red"
+            },
+            {
+                "Category": "Accessories",
+                "Color": "white"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "Total"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "green"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "red"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "white"
+            },
+            {
+                "Category": "Components",
+                "Color": "Total"
+            },
+            {
+                "Category": "Components",
+                "Color": "green"
+            },
+            {
+                "Category": "Components",
+                "Color": "red"
+            },
+            {
+                "Category": "Components",
+                "Color": "white"
+            }
+        ],
+        "measures": {
+            "Price": [
+                51604, 7584, 3416, null, 6616, 2720, 19840, null, 696, 31764, 968, null, 2548, 3516, 2728, 1688, 3516, null,
+                 null, null, 2728, 860,null, null, 10175, 20992, 50070, null, null, 38394, 10175, 11238, 11676, null, 9754, null
+            ],
+            "Quantity": [
+                712, 1021, 839, 209236, null, null, null,2554, 114696, 103255
+            ]
+        }
+    }
+}

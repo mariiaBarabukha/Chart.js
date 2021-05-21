@@ -1,0 +1,87 @@
+{
+    "request":{
+        "rows": [
+            {
+                "name": "Country",
+                "filter": [
+                    "France",
+                    "USA"
+                ]
+            }
+        ],
+        "columns": [
+            {
+                "name": "Category"
+            },
+            {
+                "name": "Color"
+            }
+        ],
+        "measures": [
+            {
+                "name": "Price"
+            },
+            {
+                "name": "Quantity"
+            }
+        ]
+    },
+
+
+
+    "respond":{
+        "rows": [
+            {
+                "Country": "Total"
+            },
+            {
+                "Country": "France"
+            },
+            {
+                "Country": "United States"
+            }
+        ],
+        "columns": [
+            {
+                "Category": "Total",
+                "Color": "Total"
+            },
+            {
+                "Category": "Cars",
+                "Color": "Total"
+            },
+            {
+                "Category": "Cars",
+                "Color": "green"
+            },
+            {
+                "Category": "Cars",
+                "Color": "red"
+            },
+            {
+                "Category": "Cars",
+                "Color": "white"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "Total"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "green"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "white"
+            }
+        ],
+        "measures": {
+            "Price": [
+                1679486, 1673422, 6064, 359628, 278243, 1035551, 5204, null, 860
+            ],
+            "Quantity": [
+                712, 1021, 839, 209236, null, null, null,2554, 114696, 103255
+            ]
+        }
+    }
+}
