@@ -1,6 +1,7 @@
 import defaults from './core.defaults.js';
 import {each, isObject} from '../helpers/helpers.core.js';
 import {toPadding} from '../helpers/helpers.options.js';
+import {FullChartArea } from '../../myTests/Params.js';
 
 /**
  * @typedef { import("./core.controller").default } Chart
@@ -371,6 +372,8 @@ export default {
       x: padding.left,
       y: padding.top
     }, padding);
+
+    FullChartArea.push(Object.assign(chartArea));
 
     setLayoutDims(verticalBoxes.concat(horizontalBoxes), params);
 

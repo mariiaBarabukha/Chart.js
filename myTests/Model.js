@@ -7,6 +7,7 @@ export default class Model {
     static instance;
     static dataStorage = undefined;
     static colorManager = undefined;
+    static labelManager = undefined;
     // constructor(data){
     //     if(instance){
     //         return instance;

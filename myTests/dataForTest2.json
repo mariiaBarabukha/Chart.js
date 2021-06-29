@@ -1,0 +1,203 @@
+{
+    "names":{
+        "rows": [
+            {
+                "name": "Country",
+                "filter":[
+                    "France", 
+                    "USA",
+                    "Australia"
+                ]           
+            },
+            {
+                "name":"Quartal",
+                "filter":[
+                    "Total",
+                    "1","2","3","4"
+                ]
+            }
+        ],
+        "columns": [
+            {
+                "name": "Category"
+            },
+            {
+                "name": "Color"
+            }
+        ],
+        "measures": [
+            {
+                "name": "Price"
+            }
+        ]
+    },
+    
+    "data":{
+        "rows": [           
+            {
+                "Country": "France",
+                "Quartal":"Total"                
+            },
+            {
+                "Country": "France",
+                "Quartal":"1"                
+            },
+            {
+                "Country": "France",
+                "Quartal":"2"                
+            },
+            {
+                "Country": "France",
+                "Quartal":"3"                
+            },
+            {
+                "Country": "France",
+                "Quartal":"4"                
+            },
+            {
+                "Country": "United States",
+                "Quartal":"Total"    
+            },
+            {
+                "Country": "United States",
+                "Quartal":"1"    
+            },
+            {
+                "Country": "United States",
+                "Quartal":"2"    
+            },
+            {
+                "Country": "United States",
+                "Quartal":"3"    
+            },{
+                "Country": "United States",
+                "Quartal":"4"    
+            },
+            {
+                "Country": "Australia",
+                "Quartal":"Total"    
+            },
+            {
+                "Country": "Australia",
+                "Quartal":"1"    
+            },
+            {
+                "Country": "Australia",
+                "Quartal":"2"    
+            },
+            {
+                "Country": "Australia",
+                "Quartal":"3"    
+            },
+            {
+                "Country": "Australia",
+                "Quartal":"4"    
+            }
+        ],
+        "columns": [
+            
+            {
+                "Category": "Accessories",
+                "Color": "Total"
+            },
+            {
+                "Category": "Accessories",
+                "Color": "green"
+            },
+            {
+                "Category": "Accessories",
+                "Color": "red"
+            },
+            {
+                "Category": "Accessories",
+                "Color": "white"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "Total"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "green"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "red"
+            },
+            {
+                "Category": "Clothing",
+                "Color": "white"
+            },
+            {
+                "Category": "Components",
+                "Color": "Total"
+            },
+            {
+                "Category": "Components",
+                "Color": "green"
+            },
+            {
+                "Category": "Components",
+                "Color": "red"
+            },
+            {
+                "Category": "Components",
+                "Color": "white"
+            }
+        ],
+        "measures": {
+            "Price": [
+                51604,20500, 10400, 5600,15104,
+                7584,2000,5584, null, null,
+                3416, null, 3416, null, null,
+
+                null, null, null, null, null,
+                6616, 3308, null, 3308,null,
+                2720, null, null, null, 2720,
+
+                19840, 10500, 9340, null,null,
+                null, null, null, null, null,
+                696, 696, null, null, null,
+
+                31764, 10000, 11500, 5000,5264,
+                968, null, null, 968, null,
+                null, null, null, null, null,
+
+                2548, null, 2548, null, null,
+                3516, 3516, null, null, null,
+                2728, 2000, null, null, 728,
+
+                1688, null, 800, 888, null,
+                3516, 3516, null, null, null,
+                null, null, null, null, null,
+
+                null, null, null, null, null,
+                null, null, null, null, null, 
+                2728, 2000, null, null, 728,
+
+                860, 860, null, null, null,
+                null, null, null, null, null,
+                null, null, null, null, null, 
+
+                10175, 5000, null, 5175, null,
+                20992, 7000, 10000, 3992, null,
+                50070, 25000, 10000, 10000,5070,
+
+                null, null, null, null, null,
+                null, null, null, null, null, 
+                38394, 16000, 12000, null, 10394,
+
+                10175, 5000, null, 5175, null,
+                11238, 11238, null, null, null,
+                11676, null, null, 11676, null,
+
+                null, null, null, null, null,
+                9754, 9754, null, null, null,
+                null, null, null, null, null
+            ],
+            "Quantity": [
+                712, 1021, 839, 209236, null, null, null,2554, 114696, 103255
+            ]
+        }
+    }
+}

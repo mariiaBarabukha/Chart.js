@@ -24,10 +24,7 @@
     },
     
     "data":{
-        "rows": [
-            {
-                "Country": "Total"
-            },
+        "rows": [           
             {
                 "Country": "France"
             },

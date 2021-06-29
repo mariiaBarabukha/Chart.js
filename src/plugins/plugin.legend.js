@@ -11,8 +11,9 @@ import {_toLeftRightCenter, _alignStartEnd, _textX} from '../helpers/helpers.ext
 import {toTRBLCorners} from '../helpers/helpers.options.js';
 
 //import {dataLayer1, dataLayer2} from '../../myTests/myData.js';
-import DataStorage from "../../myTests/Data/DataStorage.js";
+
 import Model from "../../myTests/Model.js";
+import { Hiddens } from '../../myTests/Params.js';
 /**
  * @typedef { import("../platform/platform.base").ChartEvent } ChartEvent
  */
@@ -429,6 +430,10 @@ export class Legend extends Element {
     const lineHeight = itemHeight + padding;
     me.legendItems.forEach((legendItem, i) => {
       // TODO: Remove fallbacks at v4
+      
+      if(Hiddens.includes(legendItem.datasetIndex)){
+        legendItem.hidden = true;
+    }
       ctx.strokeStyle = legendItem.fontColor || fontColor; // for strikethrough effect
       ctx.fillStyle = legendItem.fontColor || fontColor; // render in correct colour
 
@@ -597,31 +602,17 @@ function isListened(type, opts) {
   return false;
 };
 
-// function checkPostionOnLayer(legend, index){
-//   var i = 0;
-//   var decIndex = 0;
-//   var hiddens = [];
-//   var legends = legend.legendItems;
-//   legends.forEach(item => {
-//     if(i < index && item.hidden){
-//       //countHidden++;
-//       hiddens.push(legends.indexOf(item));
-//       var n = legends.indexOf(item) - decIndex;
-//       var amountOfChildren = dataLayer2[n].datasets.length;
-//       decIndex += amountOfChildren;
-//       i = i + amountOfChildren;
-//     }
-//     i++;
-//   });
-  
-//   return decIndex;
-// };
 
 function setVisibility(legend,ci){
+  Hiddens.splice(0, Hiddens.length);
+  legend.hiddens.forEach(hidden => {
+   Hiddens.push(hidden);
+  });
   legend.hiddens.forEach(h => {
     ci.hide(h);
   });
   
+  //legend.chart.update();
 }
 
 export default {
@@ -691,13 +682,8 @@ export default {
 
       var clicked = ci.config._config.data.datasets[index];
       var globalIndex;
-      for(var i = 0; i < Model.dataStorage.getAllDataSets().length; i++){
-        for(var j = 0; j < Model.dataStorage.getAllDataSets()[i].length;j++){
-          if(clicked.label === Model.dataStorage.getAllDataSets()[i][j].label){
-            globalIndex = j+i;  
-          }
-        }
-      }
+      var all = Model.dataStorage.getFirstLayerDataSets();
+      globalIndex = all.datasets.map(a => a.label).indexOf(clicked.label);
 
       if (ci.isDatasetVisible(index)) {  
         var _hiddens = [];      
@@ -706,7 +692,7 @@ export default {
           _hiddens.push(this.chartDataSets[h]);
         });
         this.hiddens = [];
-        this.chartDataSets = [...Model.dataStorage.getVisibleDataSets(this.visibleDataSets)];
+        this.chartDataSets = [...Model.dataStorage.getVisibleDataSets(this.visibleDataSets, "columns").datasets];
         var ind = ci.config._config.data.datasets.indexOf(clicked);
         this.hiddens.push(ind);
         
@@ -714,12 +700,14 @@ export default {
         
         //this.hiddens.splice(indexOf());
         _hiddens.forEach(h => {
-          this.hiddens.push(ci.config._config.data.datasets.indexOf(h));
+          this.hiddens.push((ci.config._config.data.datasets.map(a => a.label)).indexOf(h.label));
         });
         ci.config._config.data.datasets.splice(ind, 1, clicked);
         //this.hiddens = [];
        
-        ci.hide(ind);
+        
+        //ci.hide(ind);
+       
         // ci.update();
         //setVisibility(legend);
         
@@ -733,16 +721,18 @@ export default {
         this.hiddens.forEach(h => {
           _hiddens.push(this.chartDataSets[h]);
         });
-        this.chartDataSets = [...Model.dataStorage.getVisibleDataSets(this.visibleDataSets)];
+        this.chartDataSets = [...Model.dataStorage.getVisibleDataSets(this.visibleDataSets, "columns").datasets];
         
         ci.config._config.data.datasets = [...this.chartDataSets];
         ci.config._config.data.datasets.splice(ind, 1, clicked);
-        legendItem.hidden = false;
+       // legendItem.hidden = false;
         this.hiddens = [];
         _hiddens.forEach(h => {
-          var a = ci.config._config.data.datasets.indexOf(h);
-          this.hiddens.push(ci.config._config.data.datasets.indexOf(h));
+          var a = (ci.config._config.data.datasets.map(a => a.label)).indexOf(h.label);
+          this.hiddens.push(a);
         });
+       // legendItem.hidden = false;
+       
         ci.show(ind);
       }
       setVisibility(legend, ci)

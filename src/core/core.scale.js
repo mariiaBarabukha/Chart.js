@@ -9,6 +9,7 @@ import './core.scale.defaults.js';
 
 
 import {autoSkip} from './core.scale.autoskip.js';
+import { labelsCoordinates } from '../../myTests/Params.js';
 
 
 const reverseAlign = (align) => align === 'left' ? 'right' : align === 'right' ? 'left' : align;
@@ -1282,6 +1283,7 @@ export default class Scale extends Element {
         textBaseline,
         translation: [x, y],
         backdrop,
+        me
       });
     }
 
@@ -1519,6 +1521,8 @@ export default class Scale extends Element {
     const items = me._labelItems || (me._labelItems = me._computeLabelItems(chartArea));
     let i, ilen;
 
+    if(items[0].me.constructor.name === "CategoryScale")
+      labelsCoordinates.splice(0, labelsCoordinates.length);
     for (i = 0, ilen = items.length; i < ilen; ++i) {
       const item = items[i];
       const tickFont = item.font;
@@ -1530,7 +1534,7 @@ export default class Scale extends Element {
       }
 
       let y = item.textOffset;
-      renderText(ctx, label, 0, y, tickFont, item);
+      renderText(ctx, label, 0, y, tickFont, item, items[0].me.constructor.name);
     }
 
     if (area) {

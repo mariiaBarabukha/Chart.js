@@ -1,6 +1,7 @@
 import {_isPointInArea} from '../helpers/helpers.canvas.js';
 import {_lookupByKey, _rlookupByKey} from '../helpers/helpers.collection.js';
 import {getRelativePosition as helpersGetRelativePosition} from '../helpers/helpers.dom.js';
+import { labelsCoordinates } from '../../myTests/Params.js';
 
 /**
  * @typedef { import("./core.controller").default } Chart
@@ -128,6 +129,11 @@ function getDistanceMetricForAxis(axis) {
 function getIntersectItems(chart, position, axis, useFinalPosition) {
   const items = [];
 
+  
+
+  var label = checkForLabels(position);
+ 
+
   if (!_isPointInArea(position, chart.chartArea, chart._minPadding)) {
     return items;
   }
@@ -165,6 +171,9 @@ function getNearestItems(chart, position, axis, intersect, useFinalPosition) {
       return;
     }
 
+    if(checkForLabels){
+      return true;
+    }
     const center = element.getCenterPoint(useFinalPosition);
     const distance = distanceMetric(position, center);
     if (distance < minDistance) {
@@ -178,6 +187,17 @@ function getNearestItems(chart, position, axis, intersect, useFinalPosition) {
 
   optimizedEvaluateItems(chart, axis, position, evaluationFunc);
   return items;
+}
+
+function checkForLabels(position){
+  labelsCoordinates.forEach(coordinates => {
+    if(position.x < coordinates.right && position.x > coordinates.left &&
+      position.y > coordinates.top && position.y < coordinates.bottom){
+        //console.log(coordinates);
+        return coordinates;
+    }
+  });
+  return {};
 }
 
 function getAxisItems(chart, e, options, useFinalPosition) {
@@ -246,6 +266,7 @@ export default {
         }
       });
 
+      
       return elements;
     },
 

@@ -7,22 +7,32 @@ class DataStorage{
     #amount_main_groups = undefined;
     #visibleLayers = [];
     labels = undefined;
-    constructor(data, req){
-       if(data && req){
-        this.setData(data, req);
+    q = undefined;
+    constructor(data){
+        this.q = new DataSetsMaker(data);
+       if(data){
+        this.setData(data);
        }
     }
 
 
     setData(data, req){
-        var q = new DataSetsMaker(data);
-        var res = q.makeDataSets(req);
-        this.#datasets = res.datasets;
+        
+        var res = this.q.makeDataSets();
+        this.#datasets = res.sets;
         this.labels = res.labels;
-        this.#amount_main_groups = q.amount_of_params;
-        for(var i = 0; i < this.#amount_main_groups; i++){
-            this.#visibleLayers.push(0);
+        var temp = [];
+        this.#amount_main_groups = this.q.amount_of_params;
+        for(var i = 0; i < res.sets[0].length; i++){
+            temp.push(0);
         }
+        this.#visibleLayers.push(temp);
+
+        temp = [];
+        for(var i = 0; i < this.q.rows_filters[0].length; i++){
+            temp.push(0);
+        }
+        this.#visibleLayers.push(temp);
     }
 
 
@@ -30,22 +40,36 @@ class DataStorage{
         return this.#datasets;
     }
 
-    getVisibleDataSets(visible){
-        this.#visibleLayers = visible || this.#visibleLayers;
-        var res = [...this.#datasets[0]];
-        for(var i = this.#visibleLayers.length-1; i >= 0; i--){
-            if(this.#visibleLayers[i] === 0){
-                continue;
-            }
-            var temp = this.#datasets[this.#visibleLayers[i]];
-            var amount = temp.length/this.#amount_main_groups;
-            var i_start = i * amount;
-
-            for(var j = i_start+amount-1; j >= i_start; j--){
-                res.splice(i+1,0,this.#datasets[this.#visibleLayers[i]][j]);
-            }
+    getVisibleDataSets(visible, mode){
+        if(mode === "columns"){
+            this.#visibleLayers[0] = [...visible];
+            visible = null;
         }
-        return res;
+        if(mode === "rows"){
+            this.#visibleLayers[1] = [...visible];
+            visible = null;
+        }
+        return this.q.getVisibleDataSets(this.#datasets, this.labels, visible || this.#visibleLayers);        
+    }
+
+    getFirstLayerDataSets(){
+        var temp = [...this.#visibleLayers];
+        for (var i = 0; i < temp[0].length; i++){
+            temp[0][i] = 0;
+        }
+        return this.q.getVisibleDataSets(this.#datasets, this.labels, temp);     
+    }
+
+    getFirstRowLayer(){
+       var temp = [];
+       this.#visibleLayers[1].forEach(element => {
+           temp.push(0);
+       });
+        return this.q.getVisibleDataSets(this.#datasets, this.labels, [this.#visibleLayers[0], temp]);
+    }
+
+    getVisibleLayersScheme(){
+        return this.#visibleLayers;
     }
 }
 

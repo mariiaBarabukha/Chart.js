@@ -1,17 +1,19 @@
-import animator from './core.animator.js';
-import defaults, {overrides} from './core.defaults.js';
-import Interaction from './core.interaction.js';
-import layouts from './core.layouts.js';
-import {BasicPlatform, DomPlatform} from '../platform/index.js';
-import PluginService from './core.plugins.js';
-import registry from './core.registry.js';
-import Config, {determineAxis, getIndexAxis} from './core.config.js';
-import {retinaScale} from '../helpers/helpers.dom.js';
-import {each, callback as callCallback, uid, valueOrDefault, _elementsEqual, isNullOrUndef, setsEqual} from '../helpers/helpers.core.js';
-import {clearCanvas, clipArea, unclipArea, _isPointInArea} from '../helpers/helpers.canvas.js';
+import { clearCanvas, clipArea, unclipArea, _isPointInArea } from '../helpers/helpers.canvas.js';
+import { callback as callCallback, each, isNullOrUndef, setsEqual, uid, valueOrDefault, _elementsEqual } from '../helpers/helpers.core.js';
+import { retinaScale } from '../helpers/helpers.dom.js';
 // @ts-ignore
 //import {version} from '../../package.json';
-import {debounce} from '../helpers/helpers.extras.js';
+import { debounce } from '../helpers/helpers.extras.js';
+import { BasicPlatform, DomPlatform } from '../platform/index.js';
+import animator from './core.animator.js';
+import Config, { determineAxis, getIndexAxis } from './core.config.js';
+import defaults, { overrides } from './core.defaults.js';
+import Interaction from './core.interaction.js';
+import layouts from './core.layouts.js';
+import PluginService from './core.plugins.js';
+import registry from './core.registry.js';
+import { FullChartArea } from '../../myTests/Params.js';
+import { labelsCoordinates } from '../../myTests/Params.js';
 
 /**
  * @typedef { import("../platform/platform.base").ChartEvent } ChartEvent
@@ -537,6 +539,7 @@ class Chart {
       me._eventHandler(me._lastEvent, true);
     }
 
+    
     me.render();
   }
 
@@ -620,6 +623,7 @@ class Chart {
   }
 
   render() {
+    labelsCoordinates.splice(0, labelsCoordinates.length);
     const me = this;
     if (me.notifyPlugins('beforeRender', {cancelable: true}) === false) {
       return;
@@ -695,7 +699,8 @@ class Chart {
 	 * @return {object[]}
 	 */
   getSortedVisibleDatasetMetas() {
-    return this._getSortedDatasetMetas(true);
+    // return this._getSortedDatasetMetas(true);
+    return this._getSortedDatasetMetas(false);
   }
 
   /**
@@ -756,11 +761,36 @@ class Chart {
   getElementsAtEventForMode(e, mode, options, useFinalPosition) {
     const method = Interaction.modes[mode];
     if (typeof method === 'function') {
-      return method(this, e, options, useFinalPosition);
+      var res = method(this, e, options, useFinalPosition);
+      if(res.length > 0){
+        return res;
+      }
+      if(e.type === "click"){
+        res = this.checkForLabels(e) || [];
+        if(res.length > 0){
+          return res;
+        }
+      }
+      
     }
 
     return [];
   }
+
+  
+ checkForLabels(position){
+  var res = [];
+  for(var i = 0; i < labelsCoordinates.length; i++) {
+    var coordinates = labelsCoordinates[i];
+    if(position.x < coordinates.right && position.x > coordinates.left &&
+      position.y > coordinates.top && position.y < coordinates.bottom){
+      //  console.log(coordinates);
+      res.push(coordinates);
+      return res;
+    }
+  };
+  return [];
+}
 
   getDatasetMeta(datasetIndex) {
     const me = this;

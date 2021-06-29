@@ -1,6 +1,8 @@
 import {isArray, isNullOrUndef} from './helpers.core.js';
 import {PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from './helpers.math.js';
-
+import { labelsCoordinates } from '../../myTests/Params.js';
+import { FullChartArea } from '../../myTests/Params.js';
+import { Label } from '../../myTests/Label.js';
 /**
  * @typedef { import("../core/core.controller").default } Chart
  */
@@ -251,6 +253,7 @@ export function drawPoint(ctx, options, x, y) {
 export function _isPointInArea(point, area, margin) {
   margin = margin || 0.5; // margin - default is to match rounded decimals
 
+  //area = FullChartArea[0];
   return point && point.x > area.left - margin && point.x < area.right + margin &&
 		point.y > area.top - margin && point.y < area.bottom + margin;
 }
@@ -304,7 +307,7 @@ export function _bezierCurveTo(ctx, previous, target, flip) {
 /**
  * Render text onto the canvas
  */
-export function renderText(ctx, text, x, y, font, opts = {}) {
+export function renderText(ctx, text, x, y, font, opts = {}, scaleType) {
   const lines = isArray(text) ? text : [text];
   const stroke = opts.strokeWidth > 0 && opts.strokeColor !== '';
   let i, line;
@@ -349,6 +352,15 @@ export function renderText(ctx, text, x, y, font, opts = {}) {
     }
 
     ctx.fillText(line, x, y, opts.maxWidth);
+    if(scaleType === "CategoryScale"){
+      const _metrics = ctx.measureText(line);
+      const _left = x - _metrics.actualBoundingBoxLeft + opts.translation[0];
+      const _right = x + _metrics.actualBoundingBoxRight + opts.translation[0];
+      const _top = y - _metrics.actualBoundingBoxAscent + opts.translation[1];
+      const _bottom = y + _metrics.actualBoundingBoxDescent +opts.translation[1];
+      labelsCoordinates.push(new Label(_left, _right, _top, _bottom, 0, labelsCoordinates.length, line));
+    }
+    
 
     if (opts.strikethrough || opts.underline) {
       /**
@@ -364,6 +376,7 @@ export function renderText(ctx, text, x, y, font, opts = {}) {
       const top = y - metrics.actualBoundingBoxAscent;
       const bottom = y + metrics.actualBoundingBoxDescent;
       const yDecoration = opts.strikethrough ? (top + bottom) / 2 : bottom;
+      
 
       ctx.strokeStyle = ctx.fillStyle;
       ctx.beginPath();

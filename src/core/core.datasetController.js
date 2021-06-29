@@ -3,6 +3,7 @@ import defaults from './core.defaults.js';
 import {isArray, isFinite, isObject, valueOrDefault, resolveObjectKey, defined} from '../helpers/helpers.core.js';
 import {listenArrayEvents, unlistenArrayEvents} from '../helpers/helpers.collection.js';
 import {sign} from '../helpers/helpers.math.js';
+import { Hiddens } from '../../myTests/Params.js';
 
 /**
  * @typedef { import("./core.controller").default } Chart
@@ -353,6 +354,7 @@ export default class DatasetController {
     const dataset = me.getDataset();
     let stackChanged = false;
 
+    
     me._dataCheck();
 
     // make sure cached _stacked status is current

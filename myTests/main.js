@@ -6,6 +6,7 @@ import {dataLayer2} from './myData.js';
 import DataStorage from "./Data/DataStorage.js"
 import ColorManager from "./Utils/ColorManager.js";
 import Model from './Model.js';
+import LabelsController from './LabelsController.js';
 var ctx = document.getElementById('myChart');
 //const data = dataLayer1;
 
@@ -23,7 +24,7 @@ var ctx = document.getElementById('myChart');
 // }
 
 var input =
-fetch('./dataForTest.json')
+fetch('./dataForTest2.json')
   .then(response => response.json())
   .then((data) => {
     
@@ -124,18 +125,15 @@ fetch('./dataForTest.json')
       ]
       
     }
-    Model.dataStorage = new DataStorage(data, req);
-    console.log(Model.dataStorage);
+    Model.dataStorage = new DataStorage(data);
 
-    var d = new DataStorage(data, req);
-    // JSON.parse(text)
-      // Model.getInstance().dataStorage = d;
-      //console.log(d.getAllDataSets());
-      var myData = {labels: d.labels, datasets: d.getVisibleDataSets()};
+    var d = new DataStorage(data);
+    var myData = d.getVisibleDataSets();
      
+    console.log(myData);
       
     
-      const config = {
+    const config = {
         type: 'bar',
         data: myData,
         options: {
@@ -155,10 +153,34 @@ fetch('./dataForTest.json')
     
     
     var chart = new Chart(ctx, config);
+    document.getElementById("myChart").onclick = function(evt){    
+      
+      LabelsController.changeVisibility(chart, evt);     
+    }
+      
+    // document.getElementById("open").onclick = function open(){
+    //   console.log("a");
+    //   chart.data.labels.splice(0,0,"extra");
+    //   const data = chart.data.datasets;
+    //   data.forEach(d => {
+    //     d.data.splice(0,0,0);
+    //   });
+    //   data[0].data[0] = 5000;
+    //   // const dsColor = ["rgba(0,255,255,0.4)"];
+    //   // const newDataset = {
+    //   //   label: 'New data',
+    //   //   backgroundColor: dsColor,
+    //   //   borderColor: dsColor,
+    //   //   borderWidth: 1,
+    //   //   data: [5000],
+    //   // };
+    //   // chart.data.datasets.push(newDataset);
+    //   chart.update();    
+    // }
   }
-    // {return data}
-    );
-console.log(input);
+ 
+);
+
 
 
 

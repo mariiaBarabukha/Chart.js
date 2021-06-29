@@ -1,24 +1,30 @@
 // import Model from "../Model.js"
+import LabelsController from "../LabelsController.js";
 import Model from "../Model.js";
-import colorLib from '../../node_modules/@kurkle/color/dist/color.esm.js';
-import ColorManager from "../Utils/ColorManager.js"
+
 class DataSetsMaker{
-    rows_names = []; //countries
-    columns_names = []; //categories and colors
+    rows_names = []; //names
+    rows_filters = []; // name of countries and quartals
+    columns_names = []; //names
+    column_filters = [];
     amount_of_params = 0;
     // measures_names = []; //price and quantity
     _data = undefined;
+    #visible = undefined;
 
 
     constructor(data){
         this._data = data.data;
-        // data.names.rows[0].forEach(n => {
-        //     this.rows_names.push(n.name);
-        // });
-        data.names.columns.forEach(n => {
-            this.columns_names.push(n.name);
+        data.names.rows.forEach(n => {
+            this.rows_names.push(n.name);     
+            this.rows_filters.push(n.filter);       
         });
+       
 
+        data.names.columns.forEach(n => {
+          this.columns_names.push(n.name);    
+               
+      });
         // data.names.measures.forEach(n => {
         //     this.measures_names.push(n.name);
         // });
@@ -26,102 +32,166 @@ class DataSetsMaker{
         
     }
 
-    makeDataSets(req){     
-
-      return this._ask(req);
+    makeDataSets(){   
+      return this._groupAndGetData();
     }
 
     
 
-    _ask(request){
-        var sets = [[]];        
-        var _rows = request.rows;
+    _groupAndGetData(){
+        var sets = [];        
+        var _rows = this._data.rows;
         // this.rows_names = _ro
-        var _cols = request.columns;
+        var _cols = this._data.columns;
         var labels = [];
-        for(var i = 0; i < _rows[0].filter.length; i++){            
-            var label = _rows[0].filter[i];
-            labels.push(label);
-            for(var j = 0; j < _cols[i].length; j++){
-                var _name = _cols[i][j].name;
-                var _value = _cols[i][j].value;
-                if(sets[j] === undefined)
-                    sets.push([]);
-                var _filt_vals = _cols[i][j].filter[0].values
-                var _filt_name = _cols[i][j].filter[0].name
-                for(var k = 0; k < _filt_vals.length; k++){
-                    var _filt_value = _filt_vals[k];
-                    for(var m = 0; m <  _filt_value.length; m++){
-                      //console.log(sets[j]);
-                      
-                      sets[j].push({
-                          layer:k,
-                          name:_name,
-                          value:_value,
-                          filt_name:_filt_name,
-                          filt_value:_filt_value[m]
-                      });
-                    }
-                    
-                }
-            }
+      
+        for(var i = 0; i < this.rows_filters[1].length; i++){
+          sets.push([]);
         }
-        
-        return this._respond(sets,labels,request.measures[0].name, _rows[0].filter.length);
+        for(var i = 0; i < _rows.length; i++){   //row number
+            var row_name = _rows[i][this.rows_names[0]];   
+            var row_value = _rows[i][this.rows_names[1]];        
+            var label = row_name +(row_value === "Total" ? "" : " " + row_value);
+            labels.push(label);
+            var cols = [];
+            sets[i%this.rows_filters[1].length].push({
+              row_name, row_value, cols
+            }); 
+            
+        }
+
+
+        for(var j = 0; j < _cols.length; j++){ //column number
+          var col_name = _cols[j][this.columns_names[0]];
+          var col_value = _cols[j][this.columns_names[1]];
+          sets.forEach(set => { //quart coord
+            set.forEach(subset =>{ //country coord
+              
+              subset.cols.push({col_name, col_value});
+            })
+          });
+
+          
+        }
+        sets.forEach(set => {
+          var temp;
+          set.forEach(subset =>{
+            
+            temp = this._regroup(subset.cols);
+            subset.cols = temp;
+          })
+          
+        });
+        for(var a = 0; a < sets.length; a++){ //quartal
+          for(var b = 0; b < sets[a].length; b++){//country
+            var set = sets[a];
+            for(var c = 0; c < set[b].cols.length; c++){//color
+              var col = set[b].cols[c];
+              for(var d = 0; d < col.length; d++){//category
+                var temp = col[d];
+                var index = (d * (col.length + 1) + c) *  sets[a].length * sets.length + sets.length * b + a;
+                temp.measure = this._data.measures.Price[index];
+              }
+            }
+          }
+        }
+        console.log(sets);
+        LabelsController.setSets(sets);
+        return {sets,labels};
     };
 
-    _respond(sets, labels, measures, _amount){
-        this.amount_of_params = sets.length;
+    _regroup(arr){
+      
+      var groups = {};
+      return arr.reduce(function (result, item) {
+        var key = item.col_value;
+        var group = groups[key];
+        if (!group)
+            result.push(group = groups[key] = []);
+        group.push(item);
+        return result;
+    }, []);
+    }
+
+    getVisibleDataSets(sets, labels, visible){
+        
         //var colors = new ColorManager(["rgba(255,0,0,0.4)", "rgba(0,0,255,0.4)"], );
-        var datasets = [];       
-       // var sets_len = sets.length;
-        var c = 0;
-        sets.forEach(set => {
-            
-            var color = Model.colorManager.main_colors[c++];
-            var group_len = set.length/_amount;
-            for(var i = 0; i < group_len;i++){
-              var data = [];
-              var label = set[i].value+'_'+set[i].filt_value;
-                for(var j = 0; j < this._data.columns.length; j++){
-                    // var v1 = this._data.columns[j][set[i].name];
-                    // var v2 = set[i].filt_value;
-                    // var v3 = this._data.columns[j][set[i].filt_name];
-                    for(var a = 0; a < _amount; a++){
-                      if(set[i+ a*group_len].value === this._data.columns[j][set[i+ a*group_len].name] && 
-                        set[i+ a*group_len].filt_value === this._data.columns[j][set[i+ a*group_len].filt_name]){
-                            var ind = (j*_amount) + a;
-                            var val = this._data.measures[measures][ind] || 0;
-                            data.push(val);
-                          }
-                      }
-                    
-                    // if(set[i+group_len].value === this._data.columns[j][set[i+group_len].name] && 
-                    //   set[i+group_len].filt_value === this._data.columns[j][set[i+group_len].filt_name]){
-                    //       var ind = (j*sets_len) + 1;
-                    //       var val = this._data.measures[measures][ind] || 0;
-                    //       data.push(val);
-                    // }
-                }
-              if(datasets[set[i].layer] === undefined){
-                datasets.push([]);
-              }
-              if(set[i].layer > 0){
-                color = Model.colorManager.getNextColor(color);
-              }
-              datasets[set[i].layer].push({
-                  label:label,
-                  data:data,
-                  backgroundColor: [color],
-                 
-  
-              });
-            }
-           
-            // color_index++;
+        var datasets = [];  
+        var curr_labels = [];
+        //visible[1][1] = 1; 
+        // visible[0][1] = 1; 
+        var rows_indexes = [];
+        var cols_indexes = [];
+
+        visible[1].forEach(index => {
+          if(index === 0){
+            rows_indexes.push([0]);
+          }else{
+            var temp = [...this.rows_filters[1]].slice(1);
+            var temp2 = [];
+            temp.forEach(e => {
+              temp2.push(this.rows_filters[1].indexOf(e));
+            });
+            rows_indexes.push(temp2);
+          }
         });
-        console.log(datasets);
-        return {labels: labels, datasets:datasets};
+
+        visible[0].forEach(index => {
+          if(index === 0){
+            cols_indexes.push([0]);
+          }else{
+            var temp = [];
+
+            for(var i = 0; i <= sets[0][0].cols[0].length; i++){
+              temp.push(i);
+            }
+            cols_indexes.push(temp);
+          }
+        });
+
+        var datasets = [];
+        for(var i = 0; i < cols_indexes.length; i++){//category
+          var data = [];
+          var color = Model.colorManager.main_colors[i];
+          for(var j = 0; j < rows_indexes.length; j++){//country
+
+            
+            rows_indexes[j].forEach(row_index => {//quartal
+              if(i === 0)
+              curr_labels.push(labels[j*this.rows_filters[1].length+row_index]);
+             cols_indexes[i].forEach(col_index => {//color
+               var temp = sets[row_index][j].cols[col_index][i];
+               if(temp === null){
+                 temp = 0;
+               }
+               data.push(temp);
+             });
+            });
+          }
+          
+          if(cols_indexes !== [0]){
+            data = this._regroup(data);
+
+          }
+
+          var len = sets[0][0].cols[0].length+1;
+          var ind = i*len+parseInt(cols_indexes[i]);
+         
+          data.forEach(d => {
+            var label = d[0].col_name + 
+            (d[0].col_value === "Total" ? "" : " "+d[0].col_value);
+            let result = d.map(a => a.measure);
+            datasets.push({
+              label: label,
+              data: result,
+              backgroundColor: [color]
+            });
+          });
+          
+        }
+
+       
+        return {labels: curr_labels, datasets: datasets};
     }  
     
     
